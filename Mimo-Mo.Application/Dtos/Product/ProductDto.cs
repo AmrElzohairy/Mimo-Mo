@@ -2,7 +2,7 @@ namespace Mimo_Mo.Application.Dtos.Product;
 
 public class ProductDto
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     public string Name { get; set; } = string.Empty;
     
