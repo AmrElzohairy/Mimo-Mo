@@ -24,4 +24,8 @@
       <ProjectReference Include="..\Mimo-Mo.Core\Mimo-Mo.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories\" />
+    </ItemGroup>
+
 </Project>
