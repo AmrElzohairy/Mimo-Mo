@@ -1,0 +1,6 @@
+@Mimi_Mo.Api_HostAddress = http://localhost:5231
+
+GET {{Mimi_Mo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
