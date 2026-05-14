@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Mimo_Mo.Infrastructure.Data;
+
 namespace Mimi_Mo.Api;
 
 public class Program
@@ -7,7 +10,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
+        builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+            builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddControllers();
         builder.Services.AddSwaggerGen();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

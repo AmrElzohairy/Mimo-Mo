@@ -7,4 +7,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Mimo-Mo.Core\Mimo-Mo.Core.csproj" />
+      <ProjectReference Include="..\Mimo-Mo.Infrastructure\Mimo-Mo.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

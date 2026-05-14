@@ -16,6 +16,9 @@ public class ProductConfigrations : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Image).IsRequired(false).HasMaxLength(2048);
         builder.Property(p => p.Discount).IsRequired(false).HasColumnType("decimal(18,2)");
         builder.Property(p => p.Quantity).IsRequired();
-        builder.Property(p => p.IsAvailable).HasComputedColumnSql("[Quantity] > 0");
+        builder.Property(p => p.IsAvailable)
+            .HasComputedColumnSql(
+                "CASE WHEN [Quantity] > 0 THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END",
+                stored: false);
     }
 }
