@@ -1,12 +1,13 @@
 using AutoMapper;
 using MediatR;
 using Mimo_Mo.Application.Dtos.Product;
+using Mimo_Mo.Application.Features.Common.Responses;
 using Mimo_Mo.Core.Interfaces;
 
 namespace Mimo_Mo.Application.Features.Products.Queries.GetAllProducts;
 
 public class GetAllProductsQueryHandler 
-    : IRequestHandler<GetAllProductsQuery, IEnumerable<ProductResponseDto>>
+    : IRequestHandler<GetAllProductsQuery, ApiResponse<IEnumerable<ProductResponseDto>>>
 {
     private readonly IProductRepository _repository;
     private readonly IMapper _mapper;
@@ -19,14 +20,17 @@ public class GetAllProductsQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ProductResponseDto>> Handle(
-        GetAllProductsQuery request,
+    public async Task<ApiResponse<IEnumerable<ProductResponseDto>>> Handle(
+        GetAllProductsQuery request, 
         CancellationToken cancellationToken)
     {
+        // 1. Get the raw entities from the repo
         var products = await _repository.GetAllProductsAsync();
 
-        var result = _mapper.Map<IEnumerable<ProductResponseDto>>(products);
+        // 2. Map the entities to the DTO list
+        var productDtos = _mapper.Map<IEnumerable<ProductResponseDto>>(products);
 
-        return result;
+        // 3. Wrap the DTOs in your ApiResponse manually
+        return new ApiResponse<IEnumerable<ProductResponseDto>>(productDtos, "Products retrieved successfully");
     }
 }
