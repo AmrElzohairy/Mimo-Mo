@@ -25,7 +25,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         var product = await _repository.GetProductByIdAsync(dto.Id);
 
         if (product == null)
-            throw new Exception("Product not found");
+            throw new KeyNotFoundException("Product not found");
 
         if (dto.Name != null)
             product.Name = dto.Name;

@@ -4,6 +4,7 @@ using Mimo_Mo.Application.Dtos.Product;
 using Mimo_Mo.Application.Features.Products.Commands.CreateProduct;
 using Mimo_Mo.Application.Features.Products.Commands.UpdateProduct;
 using Mimo_Mo.Application.Features.Products.Queries.GetAllProducts;
+using Mimo_Mo.Application.Features.Products.Queries.GetProductById;
 
 namespace Mimi_Mo.Api.Controllers
 {
@@ -29,7 +30,15 @@ namespace Mimi_Mo.Api.Controllers
             var result = await _mediator.Send(new GetAllProductsQuery());
             return Ok(result);
         }
-
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var result = await _mediator.Send(new GetProductByIdQuery(id));
+            return Ok(result);
+        }
+        
+        
         [HttpPatch]
         public async Task<IActionResult> UpdateProduct(UpdateProductDto dto)
         {

@@ -1,16 +1,20 @@
+using System.Text.Json.Serialization;
+
 namespace Mimo_Mo.Application.Common.Responses;
 
 public class ApiResponse<T>
 {
     public bool Success { get; set; }
-    public string? Message { get; set; } = string.Empty;
+    
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Message { get; set; } = null;
     public T? Data { get; set; }
 
     public ApiResponse()
     {
     }
 
-    public ApiResponse(T data, string message = "")
+    public ApiResponse(T data, string message)
     {
         Success = true;
         Message = message;

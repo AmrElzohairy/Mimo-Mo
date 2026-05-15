@@ -34,8 +34,6 @@ public class ProductRepository : IProductRepository
     public async Task<Product> UpdateProductAsync(int id, Product product)
     {
         var oldProduct = await _context.Products.FindAsync(id);
-        if (oldProduct == null) return null!; 
-
         _context.Entry(oldProduct).CurrentValues.SetValues(product);
         await _context.SaveChangesAsync();
         return oldProduct;

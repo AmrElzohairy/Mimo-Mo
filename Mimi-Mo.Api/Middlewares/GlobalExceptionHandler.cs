@@ -35,9 +35,12 @@ public class GlobalExceptionHandler : IExceptionHandler
             ValidationException fluentException => fluentException.Errors
                 .Select(e => e.ErrorMessage)
                 .ToList(),
+        
+            KeyNotFoundException notFoundException => new List<string> { notFoundException.Message },
+    
             _ => new List<string> { "An unexpected error occurred." }
         };
-
+        
         // In Development, you might want the actual exception message for non-validation errors
         if (exception is not ValidationException && statusCode == 500)
         {
