@@ -1,12 +1,13 @@
 using AutoMapper;
 using MediatR;
+using Mimo_Mo.Application.Common.Responses;
 using Mimo_Mo.Application.Dtos.Product;
 using Mimo_Mo.Core.Entities;
 using Mimo_Mo.Core.Interfaces;
 
 namespace Mimo_Mo.Application.Features.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductResponseDto>
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ApiResponse<ProductResponseDto>>
 {
     private readonly IProductRepository _repository;
     private readonly IMapper _mapper;
@@ -17,7 +18,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         _mapper = mapper;
     }
 
-    public async Task<ProductResponseDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<ProductResponseDto>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var dto = request.ProductDto;
 
@@ -36,7 +37,9 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             product.Quantity = dto.Quantity.Value;
 
         await _repository.UpdateProductAsync(dto.Id , product);
+        
+      var UpdatedProdect = _mapper.Map<ProductResponseDto>(product);
 
-        return _mapper.Map<ProductResponseDto>(product);
+        return  new ApiResponse<ProductResponseDto>(UpdatedProdect);
     }
 }
