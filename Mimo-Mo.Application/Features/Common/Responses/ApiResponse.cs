@@ -23,9 +23,5 @@ public class ApiResponse<T>
         Data = data;
     }
     
-    public ApiResponse(string message)
-    {
-        Success = true;
-        Message = message;
-    }
+   
 }
