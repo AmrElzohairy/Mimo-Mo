@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Product;
 using Mimo_Mo.Application.Features.Products.Commands.CreateProduct;
@@ -17,6 +18,7 @@ namespace Mimi_Mo.Api.Controllers
 
         public ProductsController(IMediator mediator) => _mediator = mediator;
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductDto dto)
         {

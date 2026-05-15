@@ -1,12 +1,16 @@
+using System.Text;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Mimo_Mo.Application; 
 using Mimi_Mo.Api.Middlewares;
 using Mimo_Mo.Application.Common.Behavior;
 using Mimo_Mo.Core.Interfaces;
 using Mimo_Mo.Infrastructure.Data;
 using Mimo_Mo.Infrastructure.Repositories;
+using Mimo_Mo.Infrastructure.Services;
 
 
 namespace Mimi_Mo.Api;
@@ -28,6 +32,7 @@ public class Program
         
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -36,6 +41,44 @@ public class Program
         builder.Services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
+        
+        // JWT Auth
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Secret"]!))
+                };
+
+                // ← Add this block
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse(); // suppress default 401 empty response
+
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "application/json";
+
+                        var response = new
+                        {
+                            Status = 401,
+                            Errors = new[] { "Unauthorized. Please provide a valid token." },
+                            Timestamp = DateTime.UtcNow
+                        };
+
+                        await context.Response.WriteAsJsonAsync(response);
+                    }
+                };
+            });
 
         // ============================================================
         
@@ -50,7 +93,8 @@ public class Program
         
         app.UseExceptionHandler();
         app.UseHttpsRedirection();
-
+        
+        app.UseAuthentication();
         app.UseAuthorization();
 
 

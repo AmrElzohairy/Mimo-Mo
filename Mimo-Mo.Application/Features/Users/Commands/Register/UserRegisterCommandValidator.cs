@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Mimo_Mo.Application.Features.Users.Commands;
+namespace Mimo_Mo.Application.Features.Users.Commands.Register;
 
 public class UserRegisterCommandValidator : AbstractValidator<UserRegisterCommand>
 {

@@ -1,8 +1,8 @@
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Auth;
-using Mimo_Mo.Application.Features.Users.Commands;
+using Mimo_Mo.Application.Features.Users.Commands.Login;
+using Mimo_Mo.Application.Features.Users.Commands.Register;
 
 namespace Mimi_Mo.Api.Controllers
 {
@@ -18,6 +18,13 @@ namespace Mimi_Mo.Api.Controllers
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var result = await _mediator.Send(new UserRegisterCommand(registerDto));
+            return Ok(result);
+        }
+        
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login(LoginDto loginDtoDto)
+        {
+            var result = await _mediator.Send(new UserLoginCommand(loginDtoDto));
             return Ok(result);
         }
     }

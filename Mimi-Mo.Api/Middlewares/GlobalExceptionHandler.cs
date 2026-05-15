@@ -20,7 +20,6 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         _logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
 
-        // 1. Determine Status Code
         var statusCode = exception switch
         {
             ValidationException => (int)HttpStatusCode.BadRequest,
@@ -29,24 +28,18 @@ public class GlobalExceptionHandler : IExceptionHandler
             _ => (int)HttpStatusCode.InternalServerError
         };
 
-        // 2. Extract Errors (Fixes the "Cannot resolve symbol Errors" issue)
         List<string> errors = exception switch
         {
             ValidationException fluentException => fluentException.Errors
                 .Select(e => e.ErrorMessage)
                 .ToList(),
-        
+
+            UnauthorizedAccessException unauthException => new List<string> { unauthException.Message },
+
             KeyNotFoundException notFoundException => new List<string> { notFoundException.Message },
-    
+
             _ => new List<string> { "An unexpected error occurred." }
         };
-        
-        // In Development, you might want the actual exception message for non-validation errors
-        if (exception is not ValidationException && statusCode == 500)
-        {
-            // You can refine this logic based on Environment
-            errors = new List<string> { exception.Message };
-        }
 
         httpContext.Response.StatusCode = statusCode;
 

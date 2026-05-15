@@ -10,7 +10,7 @@ public class UserMappingProfile : Profile
     public UserMappingProfile()
     {
         CreateMap<User, UserResponseDto>();
-        
+        CreateMap<User, AuthResponseDto>();
       
         CreateMap<RegisterDto, User>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));

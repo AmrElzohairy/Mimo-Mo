@@ -5,7 +5,7 @@ using Mimo_Mo.Application.Dtos.User;
 using Mimo_Mo.Core.Entities;
 using Mimo_Mo.Core.Interfaces;
 
-namespace Mimo_Mo.Application.Features.Users.Commands;
+namespace Mimo_Mo.Application.Features.Users.Commands.Register;
 
 public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand,ApiResponse<UserResponseDto>>
 {
@@ -21,6 +21,7 @@ public class UserRegisterCommandHandler : IRequestHandler<UserRegisterCommand,Ap
     public async Task<ApiResponse<UserResponseDto>> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
     {
         var user = _mapper.Map<User>(request.registerDto);
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.registerDto.PasswordHash);
         await _userRepository.CreateUserAsync(user);
         return new ApiResponse<UserResponseDto>(_mapper.Map<UserResponseDto>(user),"User Registered Successfully");
     }
