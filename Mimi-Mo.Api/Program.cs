@@ -27,6 +27,7 @@ public class Program
         builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(ApplicationAssemblyReference).Assembly));
         
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
