@@ -22,4 +22,10 @@ public class ApiResponse<T>
         Success = true;
         Data = data;
     }
+    
+    public ApiResponse(string message)
+    {
+        Success = true;
+        Message = message;
+    }
 }
