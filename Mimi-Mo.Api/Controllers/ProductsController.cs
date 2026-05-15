@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Product;
 using Mimo_Mo.Application.Features.Products.Commands.CreateProduct;
+using Mimo_Mo.Application.Features.Products.Commands.UpdateProduct;
 
 namespace Mimi_Mo.Api.Controllers
 {
@@ -14,10 +15,17 @@ namespace Mimi_Mo.Api.Controllers
         public ProductsController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProductDto dto)
+        public async Task<IActionResult> CreateProduct(CreateProductDto dto)
         {
        
             var result = await _mediator.Send(new CreateProductCommand(dto));
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateProduct(UpdateProductDto dto)
+        {
+            var result = await _mediator.Send(new UpdateProductCommand(dto));
             return Ok(result);
         }
     }
