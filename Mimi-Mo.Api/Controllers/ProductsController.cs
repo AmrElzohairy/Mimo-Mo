@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Product;
 using Mimo_Mo.Application.Features.Products.Commands.CreateProduct;
 using Mimo_Mo.Application.Features.Products.Commands.UpdateProduct;
+using Mimo_Mo.Application.Features.Products.Queries.GetAllProducts;
 
 namespace Mimi_Mo.Api.Controllers
 {
@@ -19,6 +20,13 @@ namespace Mimi_Mo.Api.Controllers
         {
        
             var result = await _mediator.Send(new CreateProductCommand(dto));
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var result = await _mediator.Send(new GetAllProductsQuery());
             return Ok(result);
         }
 
