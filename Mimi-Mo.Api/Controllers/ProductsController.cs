@@ -1,9 +1,7 @@
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Product;
-using Mimo_Mo.Application.Features.Products.Commands;
-using Mimo_Mo.Application.Features.Products.Queries;
+using Mimo_Mo.Application.Features.Products.Commands.CreateProduct;
 
 namespace Mimi_Mo.Api.Controllers
 {
@@ -13,28 +11,14 @@ namespace Mimi_Mo.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public ProductsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDto>))]
-        public async Task<IActionResult> GetAll()
-        {
-            var query = new GetAllProductsQuery();
-            var result = await _mediator.Send(query);
-            return Ok(result);
-        }
+        public ProductsController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
+        public async Task<IActionResult> Create(CreateProductDto dto)
         {
-            var result = await _mediator.Send(command);
-            
-            return CreatedAtAction(nameof(GetAll), new { id = result.Id }, result);
+       
+            var result = await _mediator.Send(new CreateProductCommand(dto));
+            return Ok(result);
         }
     }
 }

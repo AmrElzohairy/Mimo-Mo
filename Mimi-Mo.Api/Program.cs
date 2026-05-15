@@ -1,8 +1,13 @@
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Mimo_Mo.Application.Features.Common.Behavior;
+using Mimo_Mo.Application; 
+using Mimi_Mo.Api.Middlewares;
 using Mimo_Mo.Core.Interfaces;
 using Mimo_Mo.Infrastructure.Data;
 using Mimo_Mo.Infrastructure.Repositories;
+
 
 namespace Mimi_Mo.Api;
 
@@ -19,21 +24,17 @@ public class Program
         builder.Services.AddSwaggerGen();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(ApplicationAssemblyReference).Assembly));
         
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddMediatR(cfg => {
+            cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        });
 
-        // 3. تسجيل الـ MediatR (CQRS)
-        // بنخليه يعمل سريالايز/Scan للـ Assembly اللي فيها الـ Command بتاعنا عشان يلقط كل الـ Handlers تلقائياً
-        var applicationAssembly = typeof(Mimo_Mo.Application.Features.Products.Commands.CreateProductCommand).Assembly;
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
-
-        // 4. تسجيل الـ AutoMapper
-        // بيعمل Scan للـ Profiles اللي في طبقة الـ Application
-        builder.Services.AddAutoMapper(cfg => {}, applicationAssembly);
-
-        // 5. تسجيل الـ FluentValidation
-        // بيسجل كل الـ Validators (زي الـ CreateProductCommandValidator) اللي في الـ Application تلقائياً
-        builder.Services.AddValidatorsFromAssembly(applicationAssembly);
+        builder.Services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddProblemDetails();
 
         // ============================================================
         
@@ -45,7 +46,8 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        
+        app.UseExceptionHandler();
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
