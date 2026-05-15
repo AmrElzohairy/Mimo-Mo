@@ -1,4 +1,4 @@
-namespace Mimo_Mo.Application.Features.Common.Responses;
+namespace Mimo_Mo.Application.Common.Responses;
 
 public class ApiResponse<T>
 {

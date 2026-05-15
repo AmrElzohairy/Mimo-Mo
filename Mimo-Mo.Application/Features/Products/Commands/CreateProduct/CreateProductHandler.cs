@@ -1,7 +1,7 @@
 using AutoMapper;
 using MediatR;
 using Mimo_Mo.Application.Dtos.Product;
-using Mimo_Mo.Application.Features.Common.Responses;
+using Mimo_Mo.Application.Common.Responses;
 using Mimo_Mo.Core.Entities;
 using Mimo_Mo.Core.Interfaces;
 

@@ -1,7 +1,7 @@
 using FluentValidation;
 using MediatR;
 
-namespace Mimo_Mo.Application.Features.Common.Behavior;
+namespace Mimo_Mo.Application.Common.Behavior;
 
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
     where TRequest : IRequest<TResponse>

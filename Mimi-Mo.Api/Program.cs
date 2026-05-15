@@ -1,9 +1,9 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Mimo_Mo.Application.Features.Common.Behavior;
 using Mimo_Mo.Application; 
 using Mimi_Mo.Api.Middlewares;
+using Mimo_Mo.Application.Common.Behavior;
 using Mimo_Mo.Core.Interfaces;
 using Mimo_Mo.Infrastructure.Data;
 using Mimo_Mo.Infrastructure.Repositories;

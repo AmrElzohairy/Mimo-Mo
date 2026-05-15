@@ -1,6 +1,6 @@
 using MediatR;
 using Mimo_Mo.Application.Dtos.Product;
-using Mimo_Mo.Application.Features.Common.Responses;
+using Mimo_Mo.Application.Common.Responses;
 
 namespace Mimo_Mo.Application.Features.Products.Queries.GetAllProducts;
 
