@@ -31,22 +31,25 @@ public class ProductRepository : IProductRepository
         return newProduct.Entity;
     }
 
-    public async Task<Product> UpdateProductAsync(int id, Product product)
+    public async Task<Product?> UpdateProductAsync(int id, Product product)
     {
         var oldProduct = await _context.Products.FindAsync(id);
+    
+        if (oldProduct == null) return null; 
+
         _context.Entry(oldProduct).CurrentValues.SetValues(product);
         await _context.SaveChangesAsync();
         return oldProduct;
     }
 
-    public async Task<Product> DeleteProductAsync(int id)
+    public async Task<Product?> DeleteProductAsync(int id)
     {
         var product = await _context.Products.FindAsync(id);
-        if (product != null)
-        {
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-        }
-        return product!; 
+    
+        if (product == null) return null;
+
+        _context.Products.Remove(product);
+        await _context.SaveChangesAsync();
+        return product;
     }
 }

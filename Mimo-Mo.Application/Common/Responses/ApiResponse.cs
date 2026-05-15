@@ -8,7 +8,7 @@ public class ApiResponse<T>
     
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public string? Message { get; set; } = null;
-    public T? Data { get; set; }
+    public T? Data { get; set; } 
 
     public ApiResponse()
     {

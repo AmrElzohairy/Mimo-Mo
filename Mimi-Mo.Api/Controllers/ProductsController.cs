@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Product;
 using Mimo_Mo.Application.Features.Products.Commands.CreateProduct;
+using Mimo_Mo.Application.Features.Products.Commands.DeleteProduct;
 using Mimo_Mo.Application.Features.Products.Commands.UpdateProduct;
 using Mimo_Mo.Application.Features.Products.Queries.GetAllProducts;
 using Mimo_Mo.Application.Features.Products.Queries.GetProductById;
@@ -43,6 +44,13 @@ namespace Mimi_Mo.Api.Controllers
         public async Task<IActionResult> UpdateProduct(UpdateProductDto dto)
         {
             var result = await _mediator.Send(new UpdateProductCommand(dto));
+            return Ok(result);
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProductById(int id)
+        {
+            var result = await _mediator.Send(new DeleteProductCommand(id));
             return Ok(result);
         }
     }
