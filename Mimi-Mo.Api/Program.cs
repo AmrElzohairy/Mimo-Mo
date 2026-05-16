@@ -76,7 +76,18 @@ public class Program
                         };
 
                         await context.Response.WriteAsJsonAsync(response);
-                    }
+                    },
+                    OnForbidden = async context =>
+                    {
+                    context.Response.StatusCode = 403;
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsJsonAsync(new
+                    {
+                    Status = 403,
+                    Errors = new[] { "Forbidden. You do not have permission to access this resource." },
+                    Timestamp = DateTime.UtcNow
+                });
+                }
                 };
             });
 

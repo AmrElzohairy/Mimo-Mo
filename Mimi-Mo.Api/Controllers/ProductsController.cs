@@ -29,7 +29,8 @@ namespace Mimi_Mo.Api.Controllers
             var result = await _mediator.Send(new CreateProductCommand(dtoWithUser));
             return Ok(result);
         }
-
+        
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -37,6 +38,7 @@ namespace Mimi_Mo.Api.Controllers
             return Ok(result);
         }
         
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
@@ -45,6 +47,7 @@ namespace Mimi_Mo.Api.Controllers
         }
         
         
+        [Authorize(Roles = "Admin")]
         [HttpPatch]
         public async Task<IActionResult> UpdateProduct(UpdateProductDto dto)
         {
@@ -52,6 +55,7 @@ namespace Mimi_Mo.Api.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductById(int id)
         {

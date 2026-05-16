@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Auth;
 using Mimo_Mo.Application.Features.Users.Commands.DeleteUser;
@@ -24,6 +25,7 @@ namespace Mimi_Mo.Api.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -31,6 +33,7 @@ namespace Mimi_Mo.Api.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetUserById(int Id)
         {
@@ -45,6 +48,7 @@ namespace Mimi_Mo.Api.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteUser(int Id)
         {
