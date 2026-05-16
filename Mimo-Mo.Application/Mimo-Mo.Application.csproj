@@ -20,8 +20,4 @@
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.Abstractions" Version="2.3.10" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Users\Queries\" />
-    </ItemGroup>
-
 </Project>
