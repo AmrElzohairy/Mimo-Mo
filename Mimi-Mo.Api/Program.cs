@@ -33,6 +33,7 @@ public class Program
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IJwtService, JwtService>();
+        builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
         builder.Services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
