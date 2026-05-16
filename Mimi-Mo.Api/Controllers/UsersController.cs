@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Auth;
+using Mimo_Mo.Application.Features.Users.Commands.DeleteUser;
 using Mimo_Mo.Application.Features.Users.Commands.Login;
 using Mimo_Mo.Application.Features.Users.Commands.Register;
 using Mimo_Mo.Application.Features.Users.Queries.GetUserById;
@@ -43,5 +44,13 @@ namespace Mimi_Mo.Api.Controllers
             var result = await _mediator.Send(new UserLoginCommand(loginDtoDto));
             return Ok(result);
         }
+        
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteUser(int Id)
+        {
+            var result = await _mediator.Send(new DeleteUserCommand(Id));
+            return Ok(result);
+        }
+
     }
 }
