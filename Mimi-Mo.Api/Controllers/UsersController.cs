@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mimo_Mo.Application.Dtos.Auth;
 using Mimo_Mo.Application.Features.Users.Commands.Login;
 using Mimo_Mo.Application.Features.Users.Commands.Register;
-using Mimo_Mo.Application.Features.Users.Queries;
+using Mimo_Mo.Application.Features.Users.Queries.GetUserById;
 using Mimo_Mo.Application.Features.Users.Queries.GetAllUsers;
 
 namespace Mimi_Mo.Api.Controllers

@@ -4,7 +4,7 @@ using Mimo_Mo.Application.Common.Responses;
 using Mimo_Mo.Application.Dtos.User;
 using Mimo_Mo.Core.Interfaces;
 
-namespace Mimo_Mo.Application.Features.Users.Queries.GetAllUsers;
+namespace Mimo_Mo.Application.Features.Users.Queries.GetUserById;
 
 public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery,ApiResponse<UserResponseDto>>
 {
