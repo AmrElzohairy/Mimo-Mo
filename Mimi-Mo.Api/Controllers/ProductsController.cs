@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,9 @@ namespace Mimi_Mo.Api.Controllers
         public async Task<IActionResult> CreateProduct(CreateProductDto dto)
         {
        
-            var result = await _mediator.Send(new CreateProductCommand(dto));
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var dtoWithUser = dto with { UserId = userId }; 
+            var result = await _mediator.Send(new CreateProductCommand(dtoWithUser));
             return Ok(result);
         }
 
